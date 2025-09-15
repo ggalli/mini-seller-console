@@ -3,7 +3,9 @@ import { getLeads } from '@/lib/api'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { LeadsTableHeader } from './leads-table-header'
 import { useSearchParams } from 'react-router-dom'
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from '@/components/ui/sheet'
+import type { Lead } from '@/types/lead'
 
 export function LeadsTable() {
   const [searchParams] = useSearchParams()
@@ -34,6 +36,14 @@ export function LeadsTable() {
     return [...filteredLeads].sort((a, b) => b.score - a.score)
   }, [filteredLeads])
 
+  const [selectedLead, setSelectedLead] = useState<Lead | null>(null)
+  const [isSheetOpen, setIsSheetOpen] = useState(false)
+
+  const handleRowClick = (lead: Lead) => {
+    setSelectedLead(lead)
+    setIsSheetOpen(true)
+  }
+
   return (
     <div>
       <LeadsTableHeader />
@@ -58,7 +68,7 @@ export function LeadsTable() {
               </TableRow>
             )}
             {sortedLeads.map((lead) => (
-              <TableRow key={lead.id}>
+              <TableRow key={lead.id} onClick={() => handleRowClick(lead)} className='cursor-pointer'>
                 <TableCell>{lead.id}</TableCell>
                 <TableCell>{lead.name}</TableCell>
                 <TableCell>{lead.company}</TableCell>
@@ -71,6 +81,28 @@ export function LeadsTable() {
           </TableBody>
         </Table>
       </div>
+
+      {selectedLead && (
+        <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
+          <SheetContent>
+            <SheetHeader>
+              <SheetTitle>Lead Details</SheetTitle>
+              <SheetDescription>
+                Detailed information about the lead.
+              </SheetDescription>
+            </SheetHeader>
+            <div className="px-4 space-y-1">
+              <p><strong>ID:</strong> {selectedLead.id}</p>
+              <p><strong>Name:</strong> {selectedLead.name}</p>
+              <p><strong>Company:</strong> {selectedLead.company}</p>
+              <p><strong>Email:</strong> {selectedLead.email}</p>
+              <p><strong>Source:</strong> {selectedLead.source}</p>
+              <p><strong>Score:</strong> {selectedLead.score}</p>
+              <p><strong>Status:</strong> {selectedLead.status}</p>
+            </div>
+          </SheetContent>
+        </Sheet>
+      )}
     </div>
   )
 }
