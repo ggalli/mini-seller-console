@@ -6,7 +6,7 @@
     "email": "john.doe@techcorp.com",
     "source": "LinkedIn",
     "score": 85,
-    "status": "Active"
+    "status": "new"
   },
   {
     "id": 2,
@@ -15,7 +15,7 @@
     "email": "jane.smith@innovateinc.com",
     "source": "Website",
     "score": 90,
-    "status": "Active"
+    "status": "contacted"
   },
   {
     "id": 3,
@@ -24,7 +24,7 @@
     "email": "alice.johnson@solutionsltd.com",
     "source": "Referral",
     "score": 75,
-    "status": "Inactive"
+    "status": "in-progress"
   },
   {
     "id": 4,
@@ -33,7 +33,7 @@
     "email": "bob.brown@enterpriseco.com",
     "source": "Email Campaign",
     "score": 65,
-    "status": "Active"
+    "status": "converted"
   },
   {
     "id": 5,
@@ -42,7 +42,7 @@
     "email": "charlie.davis@techsolutions.com",
     "source": "LinkedIn",
     "score": 80,
-    "status": "Inactive"
+    "status": "new"
   },
   {
     "id": 6,
@@ -51,7 +51,7 @@
     "email": "diana.evans@creativeworks.com",
     "source": "Website",
     "score": 95,
-    "status": "Active"
+    "status": "contacted"
   },
   {
     "id": 7,
@@ -60,7 +60,7 @@
     "email": "ethan.foster@innovateinc.com",
     "source": "Referral",
     "score": 70,
-    "status": "Inactive"
+    "status": "in-progress"
   },
   {
     "id": 8,
@@ -69,7 +69,7 @@
     "email": "fiona.green@techcorp.com",
     "source": "Email Campaign",
     "score": 60,
-    "status": "Active"
+    "status": "converted"
   },
   {
     "id": 9,
@@ -78,7 +78,7 @@
     "email": "george.harris@enterpriseco.com",
     "source": "LinkedIn",
     "score": 85,
-    "status": "Inactive"
+    "status": "new"
   },
   {
     "id": 10,
@@ -87,6 +87,6 @@
     "email": "hannah.white@solutionsltd.com",
     "source": "Website",
     "score": 90,
-    "status": "Active"
+    "status": "contacted"
   }
 ]
