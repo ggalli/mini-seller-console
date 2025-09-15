@@ -1,20 +1,14 @@
-import { Suspense } from 'react'
 import './App.css'
-import { LeadsTable } from '@/components/leads-table'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { RouterProvider } from 'react-router-dom'
+import { router } from './router'
 
 const queryClient = new QueryClient()
 
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="container mx-auto px-6">
-        <h1 className='text-5xl font-bold text-center my-10'>Mini Seller Console</h1>
-
-        <Suspense fallback={<div>Loading...</div>}>
-          <LeadsTable />
-        </Suspense>
-      </div>
+      <RouterProvider router={router} />
     </QueryClientProvider>
   )
 }
