@@ -6,6 +6,7 @@ import { useSearchParams } from 'react-router-dom'
 import { useMemo, useState } from 'react'
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from '@/components/ui/sheet'
 import type { Lead } from '@/types/lead'
+import { LeadsTableCell } from './leads-table-cell'
 
 export function LeadsTable() {
   const [searchParams] = useSearchParams()
@@ -72,7 +73,9 @@ export function LeadsTable() {
                 <TableCell>{lead.id}</TableCell>
                 <TableCell>{lead.name}</TableCell>
                 <TableCell>{lead.company}</TableCell>
-                <TableCell>{lead.email}</TableCell>
+                <LeadsTableCell isEditable>
+                  {lead.email}
+                </LeadsTableCell>
                 <TableCell>{lead.source}</TableCell>
                 <TableCell>{lead.score}</TableCell>
                 <TableCell>{lead.status}</TableCell>
