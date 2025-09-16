@@ -25,6 +25,11 @@ export function LeadsTableCell({ children, isEditable = false }: LeadsTableCellP
     setIsEditMode(false)
   }
 
+  const handleCancelEdit = () => {
+    setIsEditMode(false)
+    setInputValue(children)
+  }
+
   return (
     <TableCell className={cn(isEditable && "relative group")} onClick={(event) => event.stopPropagation()}>
       <form onSubmit={handleSubmit} className="flex items-center">
@@ -41,7 +46,7 @@ export function LeadsTableCell({ children, isEditable = false }: LeadsTableCellP
                 <Button variant="secondary" size="icon" type="submit" className="cursor-pointer size-6">
                   <CheckIcon className="text-green-500" />
                 </Button>
-                <Button variant="secondary" size="icon" onClick={toggleEditMode} className="cursor-pointer size-6">
+                <Button variant="secondary" size="icon" onClick={handleCancelEdit} className="cursor-pointer size-6">
                   <XIcon className="text-red-500" />
                 </Button>
               </div>
