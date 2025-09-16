@@ -43,15 +43,15 @@ export function LeadsTableCell({ children, isEditable = false }: LeadsTableCellP
           <div className="ml-2 opacity-0 group-hover:opacity-100 transition-opacity">
             {isEditMode ? (
               <div className="flex items-center gap-2">
-                <Button variant="secondary" size="icon" type="submit" className="cursor-pointer size-6">
+                <Button variant="secondary" size="icon" type="submit" className="size-6">
                   <CheckIcon className="text-green-500" />
                 </Button>
-                <Button variant="secondary" size="icon" onClick={handleCancelEdit} className="cursor-pointer size-6">
+                <Button variant="secondary" size="icon" onClick={handleCancelEdit} className="size-6">
                   <XIcon className="text-red-500" />
                 </Button>
               </div>
             ) : (
-              <Button variant="secondary" size="icon" onClick={toggleEditMode} className="cursor-pointer size-6">
+              <Button variant="secondary" size="icon" onClick={toggleEditMode} className="size-6">
                 <PencilIcon />
               </Button>
             )}
