@@ -8,9 +8,10 @@ import { Input } from "@/components/ui/input";
 type LeadsTableCellProps = {
   children: string | number
   isEditable?: boolean
+  onEdit?: (value: string | number) => void
 }
 
-export function LeadsTableCell({ children, isEditable = false }: LeadsTableCellProps) {
+export function LeadsTableCell({ children, isEditable = false, onEdit }: LeadsTableCellProps) {
   const [isEditMode, setIsEditMode] = useState(false)
   const [inputValue, setInputValue] = useState(children)
 
@@ -23,6 +24,7 @@ export function LeadsTableCell({ children, isEditable = false }: LeadsTableCellP
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setIsEditMode(false)
+    onEdit?.(inputValue)
   }
 
   const handleCancelEdit = () => {

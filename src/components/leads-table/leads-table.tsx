@@ -1,11 +1,11 @@
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table'
-import { getLeads } from '@/lib/api'
-import { useSuspenseQuery } from '@tanstack/react-query'
+import { getLeads, updateLead } from '@/lib/api'
+import { useMutation, useSuspenseQuery } from '@tanstack/react-query'
 import { LeadsTableHeader } from './leads-table-header'
 import { useSearchParams } from 'react-router-dom'
 import { useMemo, useState } from 'react'
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from '@/components/ui/sheet'
-import type { Lead } from '@/types/lead'
+import type { Lead, LeadStatus } from '@/types/lead'
 import { LeadsTableCell } from './leads-table-cell'
 import { Button } from '@/components/ui/button'
 import { NewOpportunityFormDialog } from '@/components/new-opportunity-form-dialog'
@@ -44,6 +44,10 @@ export function LeadsTable() {
   const [isSheetOpen, setIsSheetOpen] = useState(false)
   const [isNewOpportunityDialogOpen, setIsNewOpportunityDialogOpen] = useState(false)
 
+  const { mutate: updateLeadMutation } = useMutation({
+    mutationFn: updateLead,
+  })
+
   const handleRowClick = (lead: Lead) => {
     setSelectedLead(lead)
     setIsSheetOpen(true)
@@ -52,6 +56,10 @@ export function LeadsTable() {
   const handleConvertLeadClick = (lead: Lead) => {
     setSelectedLead(lead)
     setIsNewOpportunityDialogOpen(true)
+  }
+
+  const handleEditLead = (lead: Lead) => {
+    updateLeadMutation(lead)
   }
 
   return (
@@ -83,13 +91,13 @@ export function LeadsTable() {
                 <TableCell>{lead.id}</TableCell>
                 <TableCell>{lead.name}</TableCell>
                 <TableCell>{lead.company}</TableCell>
-                <LeadsTableCell isEditable>
+                <LeadsTableCell isEditable onEdit={(value) => handleEditLead({ ...lead, email: value as string })}>
                   {lead.email}
                 </LeadsTableCell>
                 <TableCell>{lead.source}</TableCell>
                 <TableCell>{lead.score}</TableCell>
                 <TableCell>
-                  <Select onValueChange={() => {}} defaultValue={lead.status}>
+                  <Select onValueChange={(value) => handleEditLead({ ...lead, status: value as LeadStatus })} defaultValue={lead.status}>
                     <SelectTrigger size='sm' onClick={(e) => e.stopPropagation()}>
                       <SelectValue />
                     </SelectTrigger>
