@@ -17,10 +17,6 @@ const statusesOptions: { label: string; value: LeadStatus }[] = [
   {
     label: 'In Progress',
     value: 'in-progress'
-  },
-  {
-    label: 'Converted',
-    value: 'converted'
   }
 ]
 

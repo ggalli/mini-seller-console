@@ -1,6 +1,7 @@
-import { LeadsTable } from '@/components/leads-table'
-import { OpportunitiesTable } from '@/components/opportunities-table'
+import { LeadsTable, LeadsTableLoading, LeadsTableError } from '@/components/leads-table'
+import { OpportunitiesTable, OpportunitiesTableLoading, OpportunitiesTableError } from '@/components/opportunities-table'
 import { Suspense } from 'react'
+import { ErrorBoundary } from 'react-error-boundary'
 
 export function Home() {
   return (
@@ -10,17 +11,21 @@ export function Home() {
       <div className='mb-6'>
         <h2 className='text-xl font-bold mb-2'>Leads</h2>
 
-        <Suspense fallback={<div>Loading...</div>}>
-          <LeadsTable />
-        </Suspense>
+        <ErrorBoundary fallbackRender={LeadsTableError}>
+          <Suspense fallback={<LeadsTableLoading />}>
+            <LeadsTable />
+          </Suspense>
+        </ErrorBoundary>
       </div>
 
       <div className='mb-6'>
         <h2 className='text-xl font-bold mb-2'>Opportunities</h2>
 
-        <Suspense fallback={<div>Loading...</div>}>
-          <OpportunitiesTable />
-        </Suspense>
+        <ErrorBoundary fallbackRender={OpportunitiesTableError}>
+          <Suspense fallback={<OpportunitiesTableLoading />}>
+            <OpportunitiesTable />
+          </Suspense>
+        </ErrorBoundary>
       </div>
     </div>
   )
