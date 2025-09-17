@@ -9,6 +9,7 @@ import type { Lead } from '@/types/lead'
 import { LeadsTableCell } from './leads-table-cell'
 import { Button } from '@/components/ui/button'
 import { NewOpportunityFormDialog } from '@/components/new-opportunity-form-dialog'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
 
 export function LeadsTable() {
   const [searchParams] = useSearchParams()
@@ -87,7 +88,20 @@ export function LeadsTable() {
                 </LeadsTableCell>
                 <TableCell>{lead.source}</TableCell>
                 <TableCell>{lead.score}</TableCell>
-                <TableCell>{lead.status}</TableCell>
+                <TableCell>
+                  <Select onValueChange={() => {}} defaultValue={lead.status}>
+                    <SelectTrigger size='sm' onClick={(e) => e.stopPropagation()}>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent onClick={(e) => e.stopPropagation()}>
+                      <SelectItem value="new">New</SelectItem>
+                      <SelectItem value="contacted">Contacted</SelectItem>
+                      <SelectItem value="in-progress">In Progress</SelectItem>
+                      <SelectItem value="qualified">Qualified</SelectItem>
+                      <SelectItem value="unqualified">Unqualified</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </TableCell>
                 <TableCell align='center'>
                   <Button
                     variant='outline'
