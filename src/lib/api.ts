@@ -1,6 +1,8 @@
-import { delay, generateId } from "./utils"
+import { delay, generateFakeOpportunities } from "./utils"
 import type { Lead } from "@/types/lead"
 import type { Opportunity } from "@/types/opportunity"
+import { faker } from "@faker-js/faker"
+import { generateFakeLeads } from "./utils"
 
 const leads: Lead[] = [
   {
@@ -115,12 +117,14 @@ const opportunities: Opportunity[] = [
 
 export const getLeads = async (): Promise<Lead[]> => {
   await delay(2000)
-  return leads
+  // throw new Error("Error on loading leads");
+  return generateFakeLeads(10)
 }
 
 export const getOpportunities = async (): Promise<Opportunity[]> => {
   await delay(1000)
-  return opportunities
+  // throw new Error("Error on loading opportunities");
+  return generateFakeOpportunities(2)
 }
 
 type CreateOpportunityPayload = {
@@ -135,7 +139,7 @@ export const createOpportunity = async ({leadId, opportunity}: CreateOpportunity
 
   const newOpportunity = {
     ...opportunity,
-    id: generateId()
+    id: faker.number.int({ max: 100000 })
   }
   
   opportunities.push(newOpportunity)
