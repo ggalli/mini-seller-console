@@ -7,6 +7,8 @@ import { useMemo, useState } from 'react'
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from '@/components/ui/sheet'
 import type { Lead } from '@/types/lead'
 import { LeadsTableCell } from './leads-table-cell'
+import { Button } from '@/components/ui/button'
+import { NewOpportunityFormDialog } from '@/components/new-opportunity-form-dialog'
 
 export function LeadsTable() {
   const [searchParams] = useSearchParams()
@@ -39,6 +41,7 @@ export function LeadsTable() {
 
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null)
   const [isSheetOpen, setIsSheetOpen] = useState(false)
+  const [isNewOpportunityDialogOpen, setIsNewOpportunityDialogOpen] = useState(false)
 
   const handleRowClick = (lead: Lead) => {
     setSelectedLead(lead)
@@ -60,6 +63,7 @@ export function LeadsTable() {
               <TableHead>Source</TableHead>
               <TableHead>Score</TableHead>
               <TableHead>Status</TableHead>
+              <TableHead className="w-[150px]" />
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -79,6 +83,17 @@ export function LeadsTable() {
                 <TableCell>{lead.source}</TableCell>
                 <TableCell>{lead.score}</TableCell>
                 <TableCell>{lead.status}</TableCell>
+                <TableCell align='center'>
+                  <Button
+                    variant='outline'
+                    size='sm'
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      setIsNewOpportunityDialogOpen(true)
+                    }}>
+                    Convert Lead
+                  </Button>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -106,6 +121,8 @@ export function LeadsTable() {
           </SheetContent>
         </Sheet>
       )}
+
+      <NewOpportunityFormDialog open={isNewOpportunityDialogOpen} onOpenChange={setIsNewOpportunityDialogOpen} />
     </div>
   )
 }
