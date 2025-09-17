@@ -57,7 +57,7 @@ export function LeadsTable() {
     <div>
       <LeadsTableHeader />
 
-      <div className="overflow-hidden rounded-md border">
+      <div className="rounded-md border flex flex-col h-[400px] overflow-y-auto">
         <Table>
           <TableHeader>
             <TableRow>
