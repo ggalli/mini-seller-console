@@ -22,7 +22,7 @@ export const generateFakeLeads = (count: number): Lead[] => {
   for (let i = 0; i < count; i++) {
     const fakeLead: Lead = {
       id: faker.number.int({ max: 100000 }),
-      name: `${faker.person.firstName()} ${faker.person.lastName()}`,
+      name: faker.person.fullName(),
       company: faker.company.name(),
       email: faker.internet.email(),
       source: faker.helpers.arrayElement(sources),
@@ -42,7 +42,7 @@ export const generateFakeOpportunities = (count: number): Opportunity[] => {
   for (let i = 0; i < count; i++) {
     const fakeOpportunity: Opportunity = {
       id: faker.number.int({ max: 100000 }),
-      name: faker.company.name(),
+      name: faker.person.fullName(),
       stage: faker.helpers.arrayElement(stages),
       amount: faker.number.int({ min: 100, max: 9999 }),
       accountName: faker.company.name()
@@ -52,4 +52,13 @@ export const generateFakeOpportunities = (count: number): Opportunity[] => {
   }
 
   return fakeOpportunities
+}
+
+export const formatCurrency = (amount: number) => {
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(amount)
 }
