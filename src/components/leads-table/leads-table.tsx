@@ -48,6 +48,11 @@ export function LeadsTable() {
     setIsSheetOpen(true)
   }
 
+  const handleConvertLeadClick = (lead: Lead) => {
+    setSelectedLead(lead)
+    setIsNewOpportunityDialogOpen(true)
+  }
+
   return (
     <div>
       <LeadsTableHeader />
@@ -89,7 +94,7 @@ export function LeadsTable() {
                     size='sm'
                     onClick={(e) => {
                       e.stopPropagation()
-                      setIsNewOpportunityDialogOpen(true)
+                      handleConvertLeadClick(lead)
                     }}>
                     Convert Lead
                   </Button>
@@ -122,7 +127,9 @@ export function LeadsTable() {
         </Sheet>
       )}
 
-      <NewOpportunityFormDialog open={isNewOpportunityDialogOpen} onOpenChange={setIsNewOpportunityDialogOpen} />
+      {selectedLead && (
+        <NewOpportunityFormDialog open={isNewOpportunityDialogOpen} onOpenChange={setIsNewOpportunityDialogOpen} leadId={selectedLead.id} />
+      )}
     </div>
   )
 }

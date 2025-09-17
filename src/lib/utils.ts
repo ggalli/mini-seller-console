@@ -8,3 +8,7 @@ export function cn(...inputs: ClassValue[]) {
 export function delay(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms))
 }
+
+export function generateId() {
+  return Math.floor(Math.random() * 99999) + 1
+}

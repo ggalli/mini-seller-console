@@ -15,6 +15,9 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { createOpportunity } from "@/lib/api"
+import { Loader2 } from "lucide-react"
 
 const formSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -25,9 +28,13 @@ const formSchema = z.object({
 
 type FormValues = z.infer<typeof formSchema>
 
-type NewOpportunityFormDialogProps = ComponentProps<typeof Dialog>
+type NewOpportunityFormDialogProps = ComponentProps<typeof Dialog> & {
+  leadId: number
+}
 
-export function NewOpportunityFormDialog(props: NewOpportunityFormDialogProps) {
+export function NewOpportunityFormDialog({leadId, ...props}: NewOpportunityFormDialogProps) {
+  const queryClient = useQueryClient()
+
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -38,8 +45,18 @@ export function NewOpportunityFormDialog(props: NewOpportunityFormDialogProps) {
     },
   })
 
+  const { mutate: createOpportunityMutation, isPending } = useMutation({
+    mutationFn: createOpportunity,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['leads'] })
+      queryClient.invalidateQueries({ queryKey: ['opportunities'] })
+      form.reset()
+      props.onOpenChange?.(false)
+    }
+  })
+
   const handleCreateOpportunity = (data: FormValues) => {
-    console.log(data)
+    createOpportunityMutation({ leadId, opportunity: { ...data, amount: Number(data.amount) } })
   }
 
   return (
@@ -125,7 +142,9 @@ export function NewOpportunityFormDialog(props: NewOpportunityFormDialogProps) {
               <DialogClose asChild>
                 <Button variant="outline">Cancel</Button>
               </DialogClose>
-              <Button type="submit">Create</Button>
+              <Button type="submit" disabled={isPending}>
+                {isPending ? <Loader2 className="animate-spin" /> : "Create"}
+              </Button>
             </DialogFooter>
           </form>
         </Form>

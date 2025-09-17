@@ -8,6 +8,6 @@ export type Lead = {
   status: LeadStatus
 }
 
-export type LeadStatus = 'new' | 'contacted' | 'in-progress' | 'converted'
+export type LeadStatus = 'new' | 'contacted' | 'in-progress'
 
 export type LeadSource = 'website' | 'linkedin' | 'referral' | 'email-campaign'
