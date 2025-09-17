@@ -1,13 +1,16 @@
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
 import { getOpportunities } from "@/lib/api";
+import { formatCurrency } from "@/lib/utils";
 import { useSuspenseQuery } from "@tanstack/react-query";
+
+
 
 export function OpportunitiesTable() {
   const { data: opportunities } = useSuspenseQuery({
     queryKey: ['opportunities'],
     queryFn: getOpportunities,
   })
-  
+
   return (
     <div className="overflow-hidden rounded-md border">
       <Table>
@@ -28,11 +31,11 @@ export function OpportunitiesTable() {
           )}
           {opportunities.map((opportunity) => (
             <TableRow key={opportunity.id}>
-            <TableCell>{opportunity.id}</TableCell>
-            <TableCell>{opportunity.name}</TableCell>
-            <TableCell>{opportunity.stage}</TableCell>
-            <TableCell>{opportunity.amount}</TableCell>
-            <TableCell>{opportunity.accountName}</TableCell>
+              <TableCell>{opportunity.id}</TableCell>
+              <TableCell>{opportunity.name}</TableCell>
+              <TableCell>{opportunity.stage}</TableCell>
+              <TableCell>{opportunity.amount ? formatCurrency(opportunity.amount) : '--'}</TableCell>
+              <TableCell>{opportunity.accountName}</TableCell>
             </TableRow>
           ))}
         </TableBody>

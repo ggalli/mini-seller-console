@@ -10,6 +10,36 @@ import { LeadsTableCell } from './leads-table-cell'
 import { Button } from '@/components/ui/button'
 import { NewOpportunityFormDialog } from '@/components/new-opportunity-form-dialog'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
+import { Badge } from '@/components/ui/badge'
+
+// Helper functions for status badges and score visualization
+const getStatusBadgeColor = (status: LeadStatus) => {
+  switch (status) {
+    case 'new': return 'bg-blue-500'
+    case 'contacted': return 'bg-yellow-500'
+    case 'in-progress': return 'bg-slate-400'
+    case 'qualified': return 'bg-green-500'
+    case 'unqualified': return 'bg-red-500'
+    default: return 'bg-slate-400'
+  }
+}
+
+const getStatusLabel = (status: LeadStatus) => {
+  switch (status) {
+    case 'new': return 'New'
+    case 'contacted': return 'Contacted'
+    case 'in-progress': return 'In Progress'
+    case 'qualified': return 'Qualified'
+    case 'unqualified': return 'Unqualified'
+    default: return status
+  }
+}
+
+const getScoreColor = (score: number) => {
+  if (score >= 80) return 'text-green-600'
+  if (score >= 60) return 'text-yellow-600'
+  return 'text-red-600'
+}
 
 export function LeadsTable() {
   const [searchParams] = useSearchParams()
@@ -68,7 +98,7 @@ export function LeadsTable() {
 
       <div className="rounded-md border flex flex-col h-[400px] overflow-y-auto">
         <Table>
-          <TableHeader>
+          <TableHeader className="shadow-sm">
             <TableRow>
               <TableHead>ID</TableHead>
               <TableHead>Name</TableHead>
@@ -87,7 +117,11 @@ export function LeadsTable() {
               </TableRow>
             )}
             {sortedLeads.map((lead) => (
-              <TableRow key={lead.id} onClick={() => handleRowClick(lead)} className='cursor-pointer'>
+              <TableRow
+                key={lead.id}
+                onClick={() => handleRowClick(lead)}
+                className='cursor-pointer'
+              >
                 <TableCell>{lead.id}</TableCell>
                 <TableCell>{lead.name}</TableCell>
                 <TableCell>{lead.company}</TableCell>
@@ -95,10 +129,30 @@ export function LeadsTable() {
                   {lead.email}
                 </LeadsTableCell>
                 <TableCell>{lead.source}</TableCell>
-                <TableCell>{lead.score}</TableCell>
                 <TableCell>
-                  <Select onValueChange={(value) => handleEditLead({ ...lead, status: value as LeadStatus })} defaultValue={lead.status}>
-                    <SelectTrigger size='sm' onClick={(e) => e.stopPropagation()}>
+                  <div className="flex items-center gap-2">
+                    <div className={`font-bold ${getScoreColor(lead.score)}`}>
+                      {lead.score}
+                    </div>
+                    <div className="w-16 bg-slate-200 rounded-full h-2">
+                      <div
+                        className={`h-2 rounded-full transition-all ${lead.score >= 80 ? 'bg-green-500' :
+                          lead.score >= 60 ? 'bg-yellow-500' : 'bg-red-500'
+                          }`}
+                        style={{ width: `${lead.score}%` }}
+                      />
+                    </div>
+                  </div>
+                </TableCell>
+                <TableCell>
+                  <Badge className={getStatusBadgeColor(lead.status)}>
+                    {getStatusLabel(lead.status)}
+                  </Badge>
+                  <Select
+                    onValueChange={(value) => handleEditLead({ ...lead, status: value as LeadStatus })}
+                    defaultValue={lead.status}
+                  >
+                    <SelectTrigger size='sm' onClick={(e) => e.stopPropagation()} className="w-0 h-0 opacity-0 absolute">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent onClick={(e) => e.stopPropagation()}>
@@ -110,15 +164,17 @@ export function LeadsTable() {
                     </SelectContent>
                   </Select>
                 </TableCell>
-                <TableCell align='center'>
+                <TableCell>
                   <Button
                     variant='outline'
                     size='sm'
                     onClick={(e) => {
                       e.stopPropagation()
                       handleConvertLeadClick(lead)
-                    }}>
-                    Convert Lead
+                    }}
+                    className="text-xs"
+                  >
+                    Convert
                   </Button>
                 </TableCell>
               </TableRow>
